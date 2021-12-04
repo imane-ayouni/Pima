@@ -50,3 +50,46 @@ scaled_test_set = scaler.transform(test_set)
 
 scaled_df = pd.DataFrame(data = scaled_train_set)
 print(scaled_df.head())
+
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from  sklearn.tree import DecisionTreeClassifier
+import xgboost as xgb
+
+from sklearn import model_selection
+
+models = []
+models.append(("LogReg", LogisticRegression()))
+models.append(("RanFor", RandomForestClassifier()))
+models.append(("DecTree", DecisionTreeClassifier()))
+
+
+
+seed = 7
+results = []
+names = []
+X = scaled_train_set
+Y = train_set_labels
+
+
+for name, model in models:
+    kfolds = model_selection.KFold(n_splits=10)
+    cv_results  = model_selection.cross_val_score(model, X, Y, cv=kfolds, scoring="accuracy")
+    results.append(cv_results)
+    names.append(name)
+
+    outcome = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+    print(outcome)
+
+figure = plt.figure()
+figure.suptitle("Algorithm performance")
+ax = figure.add_subplot(111)
+plt.boxplot(results)
+ax.set_xticklabels(names)
+plt.show()
+
+
+
+
+

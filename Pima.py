@@ -49,7 +49,7 @@ scaled_train_set = scaler.transform(train_set)
 scaled_test_set = scaler.transform(test_set)
 
 scaled_df = pd.DataFrame(data = scaled_train_set)
-print(scaled_df.head())
+
 
 
 from sklearn.linear_model import LogisticRegression
@@ -58,6 +58,7 @@ from  sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 import xgboost as xgb
+from sklearn.model_selection import GridSearchCV
 
 from sklearn import model_selection
 
@@ -91,6 +92,36 @@ ax = figure.add_subplot(111)
 plt.boxplot(results)
 ax.set_xticklabels(names)
 plt.show()
+
+
+estimator = xgb.XGBClassifier(
+    objective= 'binary:logistic',
+    nthread=4,
+    seed=42,
+    use_label_encoder=False,
+    eval_metric='mlogloss'
+)
+parameters = {
+    'max_depth': range (2, 10, 1),
+    'n_estimators': range(60, 220, 40),
+    'learning_rate': [0.1, 0.01, 0.05]
+}
+grid_search = GridSearchCV(
+    estimator=estimator,
+    param_grid=parameters,
+    scoring = 'roc_auc',
+    n_jobs = 10,
+    cv = 10,
+    verbose=True
+)
+grid_search.fit(X,Y)
+
+xgb_bst_est = grid_search.best_estimator_
+labels_predict = xgb_bst_est.predict(scaled_test_set)
+predictions = [round(value) for value in labels_predict]
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(test_set_labels, predictions)
+print("Accuracy: ", accuracy)
 
 
 

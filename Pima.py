@@ -55,6 +55,8 @@ print(scaled_df.head())
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from  sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 import xgboost as xgb
 
 from sklearn import model_selection
@@ -63,8 +65,9 @@ models = []
 models.append(("LogReg", LogisticRegression()))
 models.append(("RanFor", RandomForestClassifier()))
 models.append(("DecTree", DecisionTreeClassifier()))
-
-
+models.append(("XGB",xgb.XGBClassifier(use_label_encoder=False,eval_metric='mlogloss')))
+models.append(("KNN",KNeighborsClassifier()))
+models.append(("SVC",SVC()))
 
 seed = 7
 results = []

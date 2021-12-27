@@ -1,6 +1,6 @@
-��#� �P�i�m�a�
-�
-�
+# Pima-Indian-Diabetes
+
+
 According to WHO about 422 million people worldwide have diabetes. Since diabetes affects a large population across the globe and the collection of these datasets is a continuous process and it comprises of various patient related attributes such as age, gender, symptoms, insulin levels, blood pressure, blood glucose levels, weight etc. We are working on Pima Indians Diabetes Dataset (PIDD), extracted from the University of California, Irvine (UCI) machine learning repository.
 
 ## Data Discription 
